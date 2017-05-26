@@ -1,0 +1,4 @@
+//通过指定配置中的hostname指定ngrok<->ngrokd tls连接的Hostname'
+server_addr: "192.168.1.195:4443"
+server_hostname: "www.example.com"
+trust_host_root_certs: true

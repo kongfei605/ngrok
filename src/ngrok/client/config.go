@@ -18,6 +18,7 @@ import (
 type Configuration struct {
 	HttpProxy          string                          `yaml:"http_proxy,omitempty"`
 	ServerAddr         string                          `yaml:"server_addr,omitempty"`
+	ServerHostName     string                          `yaml:"server_hostname,omitempty"`
 	InspectAddr        string                          `yaml:"inspect_addr,omitempty"`
 	TrustHostRootCerts bool                            `yaml:"trust_host_root_certs,omitempty"`
 	AuthToken          string                          `yaml:"auth_token,omitempty"`

@@ -37,21 +37,22 @@ const (
 type ClientModel struct {
 	log.Logger
 
-	id            string
-	tunnels       map[string]mvc.Tunnel
-	serverVersion string
-	metrics       *ClientMetrics
-	updateStatus  mvc.UpdateStatus
-	connStatus    mvc.ConnStatus
-	protoMap      map[string]proto.Protocol
-	protocols     []proto.Protocol
-	ctl           mvc.Controller
-	serverAddr    string
-	proxyUrl      string
-	authToken     string
-	tlsConfig     *tls.Config
-	tunnelConfig  map[string]*TunnelConfiguration
-	configPath    string
+	id             string
+	tunnels        map[string]mvc.Tunnel
+	serverVersion  string
+	metrics        *ClientMetrics
+	updateStatus   mvc.UpdateStatus
+	connStatus     mvc.ConnStatus
+	protoMap       map[string]proto.Protocol
+	protocols      []proto.Protocol
+	ctl            mvc.Controller
+	serverAddr     string
+	serverHostName string
+	proxyUrl       string
+	authToken      string
+	tlsConfig      *tls.Config
+	tunnelConfig   map[string]*TunnelConfiguration
+	configPath     string
 }
 
 func newClientModel(config *Configuration, ctl mvc.Controller) *ClientModel {
@@ -65,7 +66,8 @@ func newClientModel(config *Configuration, ctl mvc.Controller) *ClientModel {
 		Logger: log.NewPrefixLogger("client"),
 
 		// server address
-		serverAddr: config.ServerAddr,
+		serverAddr:     config.ServerAddr,
+		serverHostName: config.ServerHostName,
 
 		// proxy address
 		proxyUrl: config.HttpProxy,
@@ -114,7 +116,10 @@ func newClientModel(config *Configuration, ctl mvc.Controller) *ClientModel {
 	}
 
 	// configure TLS SNI
-	m.tlsConfig.ServerName = serverName(m.serverAddr)
+	m.tlsConfig.ServerName = m.serverHostName
+	if m.serverHostName == "" {
+		m.tlsConfig.ServerName = serverName(m.serverAddr)
+	}
 	m.tlsConfig.InsecureSkipVerify = useInsecureSkipVerify()
 
 	return m

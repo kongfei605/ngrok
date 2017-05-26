@@ -14,7 +14,7 @@ import (
 
 const (
 	appId          = "ap_pJSFC5wQYkAyI0FIVwKYs9h1hW"
-	updateEndpoint = "https://api.equinox.io/1/Updates"
+	updateEndpoint = "https://127.0.0.1/1/Updates"
 )
 
 const publicKey = `-----BEGIN PUBLIC KEY-----
@@ -35,6 +35,7 @@ func autoUpdate(s mvc.State, token string) {
 	}
 
 	update := func() (tryAgain bool) {
+		return false
 		log.Info("Checking for update")
 		params := check.Params{
 			AppId:      appId,
